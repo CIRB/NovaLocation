@@ -14,7 +14,7 @@ public class WawsClient {
 
     public static void main(String[] args) throws Exception{
 
-        URL url = new URL("http://localhost:8080/nova/location/brugis");
+        URL url = new URL("http://tomcat.adress:8080/nova/location/brugis");
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         connection.setDoOutput(true);
         connection.setInstanceFollowRedirects(false);
