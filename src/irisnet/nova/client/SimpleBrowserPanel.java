@@ -18,7 +18,7 @@ public class SimpleBrowserPanel extends JPanel {
 
     final JWebBrowser webBrowser ;
 
-    public SimpleBrowserPanel() {
+    public SimpleBrowserPanel(String url) {
 
         super(new BorderLayout());
         webBrowser = new JWebBrowser();
@@ -35,25 +35,10 @@ public class SimpleBrowserPanel extends JPanel {
             }
         });
 
-        webBrowser.navigate("http://staging.brugis.irisnet.be/NovaMap/map.aspx?refnova=145&extent=146621.939,173645.069,146681.939,173665.069");
+//        webBrowser.navigate("http://staging.brugis.irisnet.be/NovaMap/map.aspx?refnova=145&extent=146621.939,173645.069,146681.939,173665.069");
+        webBrowser.navigate(url);
         add(webBrowser, BorderLayout.CENTER);
 
-    }
-
-    public static void main(String[] args) {
-        UIUtils.setPreferredLookAndFeel();
-        NativeInterface.open();
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JFrame frame = new JFrame("Nova Location - Test");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().add(new SimpleBrowserPanel(), BorderLayout.CENTER);
-                frame.setSize(800, 600);
-                frame.setLocationByPlatform(true);
-                frame.setVisible(true);
-            }
-        });
-        NativeInterface.runEventPump();
     }
 
 }
