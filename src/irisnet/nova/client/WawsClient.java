@@ -10,6 +10,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Date: 27/05/11
@@ -17,9 +21,12 @@ import java.net.URL;
  */
 public class WawsClient {
 
+     private final static Pattern LINK_TOKEN = Pattern.compile("<(http://.+)>;rel=\\w+,<(http://.+)>;rel=\\w+");
+     //private final static Pattern LINK_TOKEN = Pattern.compile("(<(http://.+)>;rel=\\w+,?){2}");
+
     public static void main(String[] args) throws Exception{
 
-        URL url = new URL("http://tomcat.adress:8080/nova/location/brugis");
+        URL url = new URL("http://tomcat.adress:8080/nova/brugis/locations");
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         connection.setDoOutput(true);
         connection.setInstanceFollowRedirects(false);
@@ -34,18 +41,27 @@ public class WawsClient {
             throw new RuntimeException("Failed to create locationBrugis item.");
         }
 
-        System.out.println("\n Link : " + connection.getHeaderField("Link"));
+        //System.out.println("\n Link : " + connection.getHeaderField("Link"));
 
-        String link = connection.getHeaderField("Link").replace("<", "").replace(">", "");
+        Map headers = connection.getHeaderFields();
 
-        final String urlFrontEnd;
-        String rel = link.split(";")[1];
+        String link = headers.get("Link").toString();
+        link = link.replace("[", "");
+        link = link.replace("]", "");
+        link = link.replace(" ", "");
 
-        if(rel.equals("rel=next"))
-            urlFrontEnd = link.split(";")[0];
-        else
-            urlFrontEnd = null;
 
+        Matcher matcher = LINK_TOKEN.matcher(link);
+        System.out.println(matcher.find());
+
+        System.out.println(link);
+
+        String putGmlinUrl = matcher.group(1);
+        final String urlFrontEnd = matcher.group(2);
+
+
+
+        //getHeaderField("Link").replace("<", "").replace(">", "");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 

@@ -18,7 +18,7 @@ public class SimpleBrowserPanel extends JPanel {
 
     final JWebBrowser webBrowser ;
 
-    public SimpleBrowserPanel(String url) {
+    public SimpleBrowserPanel(final String url) {
 
         super(new BorderLayout());
         webBrowser = new JWebBrowser();
