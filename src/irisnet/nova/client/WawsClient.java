@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  */
 public class WawsClient {
 
-     private final static Pattern LINK_TOKEN = Pattern.compile("<(http://.+)>;rel=\\w+,<(http://.+)>;rel=\\w+");
+     private final static Pattern LINK_TOKEN = Pattern.compile("<(http://.+>;rel=\\w+),<(http://.+)>;rel=\\w+");
      //private final static Pattern LINK_TOKEN = Pattern.compile("(<(http://.+)>;rel=\\w+,?){2}");
 
     public static void main(String[] args) throws Exception{
@@ -45,21 +45,15 @@ public class WawsClient {
 
         Map headers = connection.getHeaderFields();
 
-        String link = headers.get("Link").toString();
-        link = link.replace("[", "");
-        link = link.replace("]", "");
-        link = link.replace(" ", "");
-
+        String link = headers.get("Link").toString().replace("[", "").replace("]", "").replace(" ", "");
 
         Matcher matcher = LINK_TOKEN.matcher(link);
         System.out.println(matcher.find());
 
         System.out.println(link);
 
-        String putGmlinUrl = matcher.group(1);
+        final String putGmlinUrl = matcher.group(1);
         final String urlFrontEnd = matcher.group(2);
-
-
 
         //getHeaderField("Link").replace("<", "").replace(">", "");
 
@@ -81,7 +75,7 @@ public class WawsClient {
             public void run() {
                 JFrame frame = new JFrame("Nova Location - Test");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().add(new SimpleBrowserPanel(urlFrontEnd), BorderLayout.CENTER);
+                frame.getContentPane().add(new SimpleBrowserPanel(urlFrontEnd, putGmlinUrl), BorderLayout.CENTER);
                 frame.setSize(800, 600);
                 frame.setLocationByPlatform(true);
                 frame.setVisible(true);

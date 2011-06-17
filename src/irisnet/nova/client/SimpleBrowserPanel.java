@@ -1,10 +1,12 @@
 package irisnet.nova.client;
 
 import chrriis.common.UIUtils;
+import chrriis.common.WebServer;
 import chrriis.dj.nativeswing.swtimpl.NativeInterface;
 import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
 import chrriis.dj.nativeswing.swtimpl.components.WebBrowserAdapter;
 import chrriis.dj.nativeswing.swtimpl.components.WebBrowserCommandEvent;
+import chrriis.dj.nativeswing.swtimpl.components.WebBrowserNavigationParameters;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,13 +14,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class SimpleBrowserPanel extends JPanel {
 
-    final JWebBrowser webBrowser ;
+    final JWebBrowser webBrowser;
 
-    public SimpleBrowserPanel(final String url) {
+    public SimpleBrowserPanel(final String urlFrontEnd, final String urlPutGmlin) {
 
         super(new BorderLayout());
         webBrowser = new JWebBrowser();
@@ -36,7 +40,15 @@ public class SimpleBrowserPanel extends JPanel {
         });
 
 //        webBrowser.navigate("http://staging.brugis.irisnet.be/NovaMap/map.aspx?refnova=145&extent=146621.939,173645.069,146681.939,173665.069");
-        webBrowser.navigate(url);
+
+        WebBrowserNavigationParameters parameters = new WebBrowserNavigationParameters();
+        Map<String, String> headersMap = new HashMap<String, String>();
+        headersMap.put("Link", urlPutGmlin);
+        parameters.setHeaders(headersMap);
+        // Let's generate the page with the resulting HTTP headers dynamically.
+        //webBrowser.navigate(WebServer.getDefaultWebServer().getDynamicContentURL(NavigationParameters.this.getClass().getName(), "header-viewer.html"), parameters);
+
+        webBrowser.navigate(urlFrontEnd, parameters);
         add(webBrowser, BorderLayout.CENTER);
 
     }
