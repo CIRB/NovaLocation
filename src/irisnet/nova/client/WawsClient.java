@@ -8,8 +8,11 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -21,12 +24,12 @@ import java.util.regex.Pattern;
  */
 public class WawsClient {
 
-     private final static Pattern LINK_TOKEN = Pattern.compile("<(http://.+>;rel=\\w+),<(http://.+)>;rel=\\w+");
+     private final static Pattern LINK_TOKEN = Pattern.compile("<(http.+>;rel=\\w+),<(http.+)>;rel=\\w+");
      //private final static Pattern LINK_TOKEN = Pattern.compile("(<(http://.+)>;rel=\\w+,?){2}");
 
     public static void main(String[] args) throws Exception{
 
-        URL url = new URL("http://tomcat.adress:8080/nova/brugis/locations");
+        URL url = new URL("http://192.168.48.128:8080/nova/brugis/locations");
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         connection.setDoOutput(true);
         connection.setInstanceFollowRedirects(false);
@@ -41,7 +44,7 @@ public class WawsClient {
             throw new RuntimeException("Failed to create locationBrugis item.");
         }
 
-        //System.out.println("\n Link : " + connection.getHeaderField("Link"));
+        System.out.println("\n Link : " + connection.getHeaderField("Link"));
 
         Map headers = connection.getHeaderFields();
 
@@ -61,13 +64,11 @@ public class WawsClient {
 
         String line = reader.readLine();
          while (line != null){
-
              System.out.println(line);
              line = reader.readLine();
          }
 
         connection.disconnect();
-
 
         UIUtils.setPreferredLookAndFeel();
         NativeInterface.open();
@@ -75,7 +76,11 @@ public class WawsClient {
             public void run() {
                 JFrame frame = new JFrame("Nova Location - Test");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().add(new SimpleBrowserPanel(urlFrontEnd, putGmlinUrl), BorderLayout.CENTER);
+                try {
+                    frame.getContentPane().add(new SimpleBrowserPanel(URLDecoder.decode(urlFrontEnd,"UTF-8"), URLDecoder.decode(putGmlinUrl,"UTF-8")), BorderLayout.CENTER);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 frame.setSize(800, 600);
                 frame.setLocationByPlatform(true);
                 frame.setVisible(true);
@@ -84,5 +89,4 @@ public class WawsClient {
         NativeInterface.runEventPump();
 
     }
-
 }
