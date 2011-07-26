@@ -22,9 +22,11 @@ public class SimpleBrowserPanel extends JPanel {
 
     final JWebBrowser webBrowser;
 
-    public SimpleBrowserPanel(final String urlFrontEnd, final String urlPutGmlin) {
+    public SimpleBrowserPanel() {
 
         super(new BorderLayout());
+
+        String urlFrontEnd = "http://192.168.48.128:8080/location";
         webBrowser = new JWebBrowser();
         webBrowser.setButtonBarVisible(false);
         webBrowser.setStatusBarVisible(false);
@@ -41,14 +43,10 @@ public class SimpleBrowserPanel extends JPanel {
 
 //        webBrowser.navigate("http://staging.brugis.irisnet.be/NovaMap/map.aspx?refnova=145&extent=146621.939,173645.069,146681.939,173665.069");
 
-        WebBrowserNavigationParameters parameters = new WebBrowserNavigationParameters();
-        Map<String, String> headersMap = new HashMap<String, String>();
-        headersMap.put("Link", urlPutGmlin);
-        parameters.setHeaders(headersMap);
         // Let's generate the page with the resulting HTTP headers dynamically.
         //webBrowser.navigate(WebServer.getDefaultWebServer().getDynamicContentURL(NavigationParameters.this.getClass().getName(), "header-viewer.html"), parameters);
 
-        webBrowser.navigate(urlFrontEnd, parameters);
+        webBrowser.navigate(urlFrontEnd);
         add(webBrowser, BorderLayout.CENTER);
 
     }
