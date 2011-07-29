@@ -18,7 +18,7 @@ public class WawsClient {
         NativeInterface.open();
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new JFrame("Nova Location - Test");
+                JFrame frame = new JFrame("Nova Location (Prototype)");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.getContentPane().add(new SimpleBrowserPanel(), BorderLayout.CENTER);
                 frame.setSize(800, 600);
