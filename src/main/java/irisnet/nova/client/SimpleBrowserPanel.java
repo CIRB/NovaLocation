@@ -1,6 +1,7 @@
 package irisnet.nova.client;
 
 import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
+
 import javax.swing.*;
 import java.awt.*;
 

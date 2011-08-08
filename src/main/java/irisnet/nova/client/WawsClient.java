@@ -2,7 +2,6 @@ package irisnet.nova.client;
 
 import chrriis.common.UIUtils;
 import chrriis.dj.nativeswing.swtimpl.NativeInterface;
-
 import javax.swing.*;
 import java.awt.*;
 
